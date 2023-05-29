@@ -1,14 +1,19 @@
 import './index.css';
 import { InputGroup, Form, Table } from 'react-bootstrap';
+import React, { useState } from 'react';
 import { data } from './data.js';
 
 
 function App() {
 
+  const [search, setSearch] = useState('');
+  console.log(search)
+
   return (
     <div className="App">
       <InputGroup className="mb-3">
         <Form.Control
+          onChange={(e)=>{setSearch(e.target.value)}}
           placeholder="Search any people's name by first name  ex) larry"
         />
       </InputGroup>
@@ -25,9 +30,11 @@ function App() {
       </thead>
       <tbody>
         {
-          data.map((item) => {
+          data.filter((i)=>{
+            return search.toLowerCase() === '' ? i : i.first_name.toLowerCase().includes(search)
+          }).map((item) => {
             return(
-              <tr>
+              <tr key={item.id}>
                 <td>{item.first_name}</td>
                 <td>{item.last_name}</td>
                 <td>{item.email}</td>
